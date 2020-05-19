@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Note Maker</title>
+
+		<script type="text/javascript" src="plugin/tinymce/tinymce.min.js"></script>
+		<script>
+			tinymce.init({
+				selector : '#content-text',
+				plugins : "save",
+				menubar : false,
+				toolbar: 'save | styleselect | bold italic | alignleft aligncenter alignright alignjustify',
+				save_onsavecallback : "save"
+			  });
+		
+			  // (B) SAVE FUNCTION
+			  function save (editor) {
+				// APPEND DATA
+				var data = new FormData();
+				data.append('content_text', editor.getContent());
+		
+				// AJAX
+				var xhr = new XMLHttpRequest();
+				xhr.open('POST', "3b-save.php", true);
+				xhr.onload = function(){
+				  if (xhr.status==200) {
+					var response = JSON.parse(this.response);
+					alert(response.message);
+				  } else { alert("ERROR LOADING 3b-save.php!"); }
+				};
+				xhr.send(data);
+			  }
+			
+		</script>	
+			 <body>
+				<textarea id="content-text"></textarea>
+				<button type="button" onclick="show()"> Show </button>
+
+				<script>
+					function Show ()
+					{
+						var xhr = new XMLHttpRequest();
+						xhr.open('GET',"4a-show.php",true);
+						xhr.send();
+						
+					}
+
+				</script>
+				
+			  </body>
+	</head>
+
+	
+
+</html>
